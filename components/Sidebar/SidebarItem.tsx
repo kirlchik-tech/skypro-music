@@ -1,45 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./SidebarItem.module.css"; 
+import styles from "./SidebarItem.module.css";
 
-export default function Header() {
+interface SidebarItemProps {
+  src: string;
+  alt: string;
+}
+
+export default function SidebarItem({ src, alt }: SidebarItemProps) {
   return (
-    <nav className={styles.main__nav}>
-      <div className={styles.nav__logo}>
-        <Link href="/">
-          <Image
-            width={113}
-            height={17}
-            className={styles.logo__image}
-            src="/img/logo.png"
-            alt="logo"
-          />
-        </Link>
-      </div>
-      <div className={styles.nav__burger}>
-        <span className={styles.burger__line}></span>
-        <span className={styles.burger__line}></span>
-        <span className={styles.burger__line}></span>
-      </div>
-      <div className={styles.nav__menu}>
-        <ul className={styles.menu__list}>
-          <li className={styles.menu__item}>
-            <Link href="/" className={styles.menu__link}>
-              Главное
-            </Link>
-          </li>
-          <li className={styles.menu__item}>
-            <Link href="/playlist" className={styles.menu__link}>
-              Мой плейлист
-            </Link>
-          </li>
-          <li className={styles.menu__item}>
-            <Link href="/auth/signin" className={styles.menu__link}>
-              Войти
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <div className={styles.sidebar__item}>
+      <Link href="#" className={styles.sidebar__link}>
+        <Image
+          className={styles.sidebar__img}
+          src={src}
+          alt={alt}
+          width={250}
+          height={170}
+        />
+      </Link>
+    </div>
   );
 }
