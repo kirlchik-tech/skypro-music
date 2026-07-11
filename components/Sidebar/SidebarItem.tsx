@@ -1,24 +1,23 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import styles from "./SidebarItem.module.css";
 
+
 interface SidebarItemProps {
-  src: string;
-  alt: string;
+  item: {
+    id: number;
+    label: string;
+    href: string;
+  };
 }
 
-export default function SidebarItem({ src, alt }: SidebarItemProps) {
+export default function SidebarItem({ item }: SidebarItemProps) {
   return (
-    <div className={styles.sidebar__item}>
-      <Link href="#" className={styles.sidebar__link}>
-        <Image
-          className={styles.sidebar__img}
-          src={src}
-          alt={alt}
-          width={250}
-          height={170}
-        />
+    <li className={styles.menu__item}>
+      <Link href={item.href} className={styles.menu__link}>
+        {item.label}
       </Link>
-    </div>
+    </li>
   );
 }

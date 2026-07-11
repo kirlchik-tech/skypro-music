@@ -1,22 +1,48 @@
-import SidebarItem from "./SidebarItem";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import styles from "./Sidebar.module.css";
+import SidebarItem from "./SidebarItem";
 
 export default function Sidebar() {
-  const playlists = [
-    { id: 1, src: "/img/playlist01.png", alt: "day's playlist" },
-    { id: 2, src: "/img/playlist02.png", alt: "day's playlist" },
-    { id: 3, src: "/img/playlist03.png", alt: "day's playlist" },
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Добавили пункт "Войти" сюда
+  const menuItems = [
+    { id: 1, label: "Главное", href: "/" },
+    { id: 2, label: "Мои треки", href: "/my-tracks" },
+    { id: 3, label: "Войти", href: "/auth/signin" }, 
   ];
 
   return (
-    <div className={styles.main__sidebar}>
-      <div className={styles.sidebar__block}>
-        <div className={styles.sidebar__list}>
-          {playlists.map((playlist) => (
-            <SidebarItem key={playlist.id} {...playlist} />
-          ))}
-        </div>
+    <nav className={styles.main__nav}>
+      <div className={styles.nav__logo}>
+        <Image 
+          src="/img/logo.png" 
+          alt="Skypro Music" 
+          width={113} 
+          height={17} 
+        />
       </div>
-    </div>
+      
+      <button className={styles.nav__burger} onClick={toggleMenu}>
+        <span className={styles.burger__line}></span>
+        <span className={styles.burger__line}></span>
+        <span className={styles.burger__line}></span>
+      </button>
+
+      <div className={`${styles.nav__menu} ${isOpen ? styles.menu__open : styles.menu__closed}`}>
+        <ul className={styles.menu__list}>
+          {menuItems.map((item) => (
+            <SidebarItem key={item.id} item={item} />
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
 }

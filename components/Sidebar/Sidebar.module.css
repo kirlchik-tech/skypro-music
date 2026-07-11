@@ -25,3 +25,105 @@
   flex-direction: column;
   align-items: center;
 }
+
+.main__nav {
+  width: 244px;
+  background-color: #181818;
+  padding: 20px 0 20px 36px;
+  min-height: 100vh;
+}
+
+.nav__logo {
+  width: 113.33px;
+  height: 43px;
+  padding: 13px 0;
+  background-color: transparent;
+  margin-bottom: 20px;
+}
+
+.nav__burger {
+  width: 20px;
+  height: 15px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0; 
+  margin-bottom: 20px; 
+}
+
+.burger__line {
+  display: block; 
+  width: 100%;
+  height: 2px; 
+  background-color: #d3d3d3;
+  border-radius: 2px; 
+}
+
+.nav__menu {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.menu__open {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  max-height: 500px;
+}
+
+.menu__closed {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+}
+
+.menu__list {
+  padding: 18px 0 10px 0;
+}
+
+.sidebar__personal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 0 15px 0;
+  margin-top: 20px;
+}
+
+.sidebar__personalName {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  margin-right: 16px;
+}
+
+.sidebar__icon {
+  width: 43px;
+  height: 43px;
+  background-color: #313131;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+.menu__login {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+  display: block;
+  padding: 5px 0;
+  text-decoration: none;
+}
+
+.menu__login:hover {
+  color: #d9b6ff;
+}
