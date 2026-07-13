@@ -6,11 +6,7 @@ import PlaylistHeader from "./PlaylistHeader";
 import styles from "./Playlist.module.css";
 import { tracksData, Track } from "../../../data";
 
-interface PlaylistProps {
-  onTrackSelect?: (track: Track) => void;
-}
-
-export default function Playlist({ onTrackSelect }: PlaylistProps) {
+export default function Playlist() {
   const [tracks] = useState<Track[]>(tracksData);
 
   return (
@@ -21,7 +17,6 @@ export default function Playlist({ onTrackSelect }: PlaylistProps) {
           <TrackItem 
             key={track._id} 
             track={track} 
-            onTrackClick={onTrackSelect}
           />
         ))}
       </div>

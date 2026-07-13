@@ -12,7 +12,7 @@ export default function Sidebar() {
     setIsOpen(!isOpen);
   };
 
-  // Добавили пункт "Войти" сюда
+
   const menuItems = [
     { id: 1, label: "Главное", href: "/" },
     { id: 2, label: "Мои треки", href: "/my-tracks" },

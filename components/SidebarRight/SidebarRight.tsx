@@ -4,13 +4,11 @@ import styles from "./SidebarRight.module.css";
 export default function SidebarRight() {
   return (
     <div className={styles.main__sidebar}>
-      
-      {/* Блок пользователя сверху */}
       <div className={styles.sidebar__personal}>
         {/* Возвращаем имя пользователя */}
         <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
+
         <div className={styles.sidebar__icon}>
-          {/* Твой идеальный SVG из Фигмы */}
           <svg 
             width="40" 
             height="40" 
