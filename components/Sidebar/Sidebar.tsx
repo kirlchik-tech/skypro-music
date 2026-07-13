@@ -22,13 +22,14 @@ export default function Sidebar() {
   return (
     <nav className={styles.main__nav}>
       <div className={styles.nav__logo}>
-        <Image 
-          src="/img/logo.png" 
-          alt="Skypro Music" 
-          width={113} 
-          height={17} 
-        />
-      </div>
+  <Image 
+    src="/img/logo.png" 
+    alt="Skypro Music" 
+    width={113} 
+    height={17} 
+    priority 
+  />
+</div>
       
       <button className={styles.nav__burger} onClick={toggleMenu}>
         <span className={styles.burger__line}></span>

@@ -125,3 +125,21 @@
   justify-content: flex-start;
 }
 
+/* Фиолетовая точка */
+.playingDot {
+  width: 16px;
+  height: 16px;
+  background-color: #b672ff;
+  border-radius: 50%;
+  display: block;
+}
+
+/* Класс для анимации пульсации */
+.playingDotActive {
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); }
+  100% { transform: scale(1.2); }
+}

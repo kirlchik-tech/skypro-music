@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Montserrat } from "next/font/google";
+import ReduxProvider from "../components/store/ReduxProvider"; 
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,7 +12,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
 
 const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
@@ -26,18 +25,16 @@ export const metadata: Metadata = {
   description: "Музыкальный плеер",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-montserrat">
-        {children}
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

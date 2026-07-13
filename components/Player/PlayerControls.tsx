@@ -1,6 +1,17 @@
-import styles from "./PlayerControls.module.css";
+"use client";
 
-export default function PlayerControls() {
+import styles from "./PlayerControls.module.css";
+import { useAppSelector } from "../store/store"; 
+
+// Указываем, что компонент ждет функцию togglePlay
+interface PlayerControlsProps {
+  togglePlay: () => void;
+}
+
+export default function PlayerControls({ togglePlay }: PlayerControlsProps) {
+  // Достаем статус воспроизведения из Redux
+  const { isPlaying } = useAppSelector((state) => state.player);
+
   return (
     <div className={styles.player__controls}>
       <div className={styles.player__btnPrev}>
@@ -8,11 +19,18 @@ export default function PlayerControls() {
           <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
         </svg>
       </div>
-      <div className={`${styles.player__btnPlay} ${styles.btn}`}>
+      
+      {/* Вешаем клик и меняем иконку Play/Pause */}
+      <div className={`${styles.player__btnPlay} ${styles.btn}`} onClick={togglePlay}>
         <svg className={styles.player__btnPlaySvg}>
-          <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
+          {isPlaying ? (
+            <use xlinkHref="/img/icon/sprite.svg#icon-pause"></use>
+          ) : (
+            <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
+          )}
         </svg>
       </div>
+      
       <div className={styles.player__btnNext}>
         <svg className={styles.player__btnNextSvg}>
           <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>

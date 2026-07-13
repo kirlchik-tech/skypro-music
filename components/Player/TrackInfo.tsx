@@ -1,7 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import styles from "./TrackInfo.module.css";
+import { useAppSelector } from "../store/store"; 
 
 export default function TrackInfo() {
+  // Достаем текущий трек из Redux
+  const { currentTrack } = useAppSelector((state) => state.player);
+
+  if (!currentTrack) return null;
+
   return (
     <div className={styles.player__trackPlay}>
       <div className={styles.trackPlay__contain}>
@@ -12,15 +20,16 @@ export default function TrackInfo() {
         </div>
         <div className={styles.trackPlay__author}>
           <Link href="#" className={styles.trackPlay__authorLink}>
-            Ты та...
+            {currentTrack.name}
           </Link>
         </div>
         <div className={styles.trackPlay__album}>
           <Link href="#" className={styles.trackPlay__albumLink}>
-            Баста
+            {currentTrack.author}
           </Link>
         </div>
       </div>
+      
       <div className={styles.trackPlay__actions}>
         <div className={`${styles.trackPlay__like} ${styles.btnIcon}`}>
           <svg className={styles.trackPlay__likeSvg}>
