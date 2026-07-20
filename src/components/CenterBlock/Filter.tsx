@@ -3,7 +3,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import styles from "./Filter.module.css";
-import { tracksData } from "../../data";
+import { tracksData } from "../../../data";
 
 export default function Filter() {
 

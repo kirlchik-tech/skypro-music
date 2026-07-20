@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import styles from "./TrackInfo.module.css";
-import { useAppSelector } from "../store/store"; 
+import { useAppSelector } from "../../store/store"; 
 
 export default function TrackInfo() {
   // Достаем текущий трек из Redux

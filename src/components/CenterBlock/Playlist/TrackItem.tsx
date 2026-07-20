@@ -2,25 +2,23 @@
 
 import Link from "next/link";
 import styles from "./TrackItem.module.css";
-import { Track } from "../../../data";
-import { useAppDispatch, useAppSelector } from "../../store/store"; 
-import { setCurrentTrack, setIsPlaying } from "../../store/features/playerSlice"; 
+import { Track } from "../../../../data";
+import { useAppDispatch, useAppSelector } from "../../../store/store"; 
+import { setCurrentTrack, setIsPlaying } from "../../../store/features/playerSlice"; 
+
 interface TrackItemProps {
   track: Track;
+  playlist: Track[]; 
 }
 
-export default function TrackItem({ track }: TrackItemProps) {
-  const dispatch = useAppDispatch();
-  
 
+export default function TrackItem({ track, playlist }: TrackItemProps) {
+  const dispatch = useAppDispatch();
   const { currentTrack, isPlaying } = useAppSelector((state) => state.player);
-  
-  
   const isCurrent = currentTrack?._id === track._id;
 
   const handleTrackClick = () => {
-    dispatch(setCurrentTrack(track));
-    dispatch(setIsPlaying(true));
+    dispatch(setCurrentTrack({ track, playlist }));
   };
 
   const formatDuration = (seconds: number): string => {

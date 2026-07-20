@@ -4,7 +4,7 @@ import { useState } from "react";
 import TrackItem from "./TrackItem";
 import PlaylistHeader from "./PlaylistHeader";
 import styles from "./Playlist.module.css";
-import { tracksData, Track } from "../../../data";
+import { tracksData, Track } from "../../../../data";
 
 export default function Playlist() {
   const [tracks] = useState<Track[]>(tracksData);
@@ -17,6 +17,7 @@ export default function Playlist() {
           <TrackItem 
             key={track._id} 
             track={track} 
+            playlist={tracks} 
           />
         ))}
       </div>

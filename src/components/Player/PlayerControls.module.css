@@ -78,10 +78,10 @@
   cursor: pointer;
 }
 
-.btnIcon:active svg {
+.btnIcon:active svg,
+.active svg {
   fill: transparent;
   stroke: #ffffff;
-  cursor: pointer;
 }
 
 .btnIcon:active .trackPlay__likeSvg,
@@ -90,3 +90,7 @@
   stroke: #ffffff;
   cursor: pointer;
 }
+
+
+
+
