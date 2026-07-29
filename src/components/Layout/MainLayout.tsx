@@ -1,16 +1,20 @@
 import Sidebar from "../Sidebar/Sidebar";
-import CenterBlock from "../CenterBlock/CenterBlock";
 import SidebarRight from "../SidebarRight/SidebarRight"; 
 import Player from "../Player/Player";
 import styles from "./MainLayout.module.css";
 
-export default function MainLayout() {
+
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.main}>
           <Sidebar />      
-          <CenterBlock />  
+          {children}  
           <SidebarRight />  
         </div>
         <Player />

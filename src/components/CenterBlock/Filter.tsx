@@ -3,20 +3,23 @@
 import { useState } from "react";
 import classNames from "classnames";
 import styles from "./Filter.module.css";
-import { tracksData } from "../../../data";
+import { Track } from "../../../data"; 
 
-export default function Filter() {
+interface FilterProps {
+  tracks: Track[];
+}
 
+export default function Filter({ tracks }: FilterProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-
 
   const toggleFilter = (filter: string) => {
     setActiveFilter(activeFilter === filter ? null : filter);
   };
 
+ const safeTracks = Array.isArray(tracks) ? tracks : [];
 
-  const uniqueAuthors = Array.from(new Set(tracksData.map((track) => track.author)));
-  const uniqueGenres = Array.from(new Set(tracksData.flatMap((track) => track.genre)));
+  const uniqueAuthors = Array.from(new Set(safeTracks.map((track) => track.author)));
+  const uniqueGenres = Array.from(new Set(safeTracks.map((track) => track.genre)));
   const yearOptions = ["По умолчанию", "Сначала новые", "Сначала старые"];
 
   return (

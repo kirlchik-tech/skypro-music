@@ -1,5 +1,5 @@
 export interface Track {
-  _id: number;
+  id: number;
   name: string;
   author: string;
   release_date: string;
@@ -13,7 +13,7 @@ export interface Track {
 
 export const tracksData: Track[] = [
   {
-    _id: 8,
+    id: 8,
     name: 'Chase',
     author: 'Alexander Nakarada',
     release_date: '2005-06-11',
@@ -25,7 +25,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 9,
+    id: 9,
     name: 'Open Sea epic',
     author: 'Frank Schroter',
     release_date: '2019-06-12',
@@ -38,7 +38,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 10,
+    id: 10,
     name: 'Sneaky Snitch',
     author: 'Kevin Macleod',
     release_date: '2022-04-16',
@@ -51,7 +51,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 11,
+    id: 11,
     name: 'Secret Garden',
     author: 'Mixkit',
     release_date: '1972-06-06',
@@ -64,7 +64,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 12,
+    id: 12,
     name: 'A journey of successfull winners',
     author: '-',
     release_date: '1985-02-02',
@@ -77,7 +77,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 13,
+    id: 13,
     name: 'Epic Heroic Conquest',
     author: '-',
     release_date: '1962-01-15',
@@ -90,7 +90,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 14,
+    id: 14,
     name: 'The March OF The Final Battle',
     author: '-',
     release_date: '2011-11-02',
@@ -103,7 +103,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 15,
+    id: 15,
     name: 'True Summer',
     author: '-',
     release_date: '2012-06-01',
@@ -116,7 +116,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 16,
+    id: 16,
     name: 'Background Sensible',
     author: 'Waltz Piano',
     release_date: '2003-05-12',
@@ -129,7 +129,7 @@ export const tracksData: Track[] = [
     stared_user: [],
   },
   {
-    _id: 17,
+    id: 17,
     name: 'Cinematic',
     author: 'Winniethemoog',
     release_date: '2004-10-01',

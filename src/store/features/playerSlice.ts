@@ -47,9 +47,11 @@ const playerSlice = createSlice({
         state.shuffledPlaylist = [];
       }
     },
+
     nextTrack: (state) => {
       const currentList = state.isShuffled ? state.shuffledPlaylist : state.playlist;
-      const currentIndex = currentList.findIndex((t) => t._id === state.currentTrack?._id);
+      
+      const currentIndex = currentList.findIndex((t) => (t.id || (t as any)._id) === (state.currentTrack?.id || (state.currentTrack as any)?._id));
 
       if (currentIndex !== -1 && currentIndex < currentList.length - 1) {
         state.currentTrack = currentList[currentIndex + 1];
@@ -58,7 +60,8 @@ const playerSlice = createSlice({
     },
     prevTrack: (state) => {
       const currentList = state.isShuffled ? state.shuffledPlaylist : state.playlist;
-      const currentIndex = currentList.findIndex((t) => t._id === state.currentTrack?._id);
+      
+      const currentIndex = currentList.findIndex((t) => (t.id || (t as any)._id) === (state.currentTrack?.id || (state.currentTrack as any)?._id));
 
       if (currentIndex > 0) {
         state.currentTrack = currentList[currentIndex - 1];

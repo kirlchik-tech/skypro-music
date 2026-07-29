@@ -1,5 +1,7 @@
 import Image from "next/image";
 import styles from "./SidebarRight.module.css";
+import Link from "next/link";
+
 
 export default function SidebarRight() {
   return (
@@ -33,13 +35,22 @@ export default function SidebarRight() {
       <div className={styles.sidebar__block}>
         <div className={styles.sidebar__list}>
           <div className={styles.sidebar__item}>
-            <Image src="/img/playlist01.png" alt="Плейлист дня" width={250} height={150} className={styles.sidebar__img} priority />
+            {/* Меняем 1 на 2 */}
+            <Link href="/selection/2">
+              <Image src="/img/playlist01.png" alt="Плейлист дня" width={250} height={150} className={styles.sidebar__img} priority />
+            </Link>
           </div>
           <div className={styles.sidebar__item}>
-            <Image src="/img/playlist02.png" alt="100 танцевальных хитов" width={250} height={150} className={styles.sidebar__img} priority />
+            {/* Меняем 2 на 3 */}
+            <Link href="/selection/3">
+              <Image src="/img/playlist02.png" alt="100 танцевальных хитов" width={250} height={150} className={styles.sidebar__img} priority />
+            </Link>
           </div>
           <div className={styles.sidebar__item}>
-            <Image src="/img/playlist03.png" alt="Инди-заряд" width={250} height={150} className={styles.sidebar__img} priority />
+            {/* Меняем 3 на 4 */}
+            <Link href="/selection/4">
+              <Image src="/img/playlist03.png" alt="Инди-заряд" width={250} height={150} className={styles.sidebar__img} priority />
+            </Link>
           </div>
         </div>
       </div>

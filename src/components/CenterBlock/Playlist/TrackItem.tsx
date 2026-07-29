@@ -15,7 +15,9 @@ interface TrackItemProps {
 export default function TrackItem({ track, playlist }: TrackItemProps) {
   const dispatch = useAppDispatch();
   const { currentTrack, isPlaying } = useAppSelector((state) => state.player);
-  const isCurrent = currentTrack?._id === track._id;
+  const trackId = track.id || (track as any)._id;
+  const currentTrackId = currentTrack?.id || (currentTrack as any)?._id;
+  const isCurrent = currentTrackId && trackId ? currentTrackId === trackId : false;
 
   const handleTrackClick = () => {
     dispatch(setCurrentTrack({ track, playlist }));

@@ -27,13 +27,7 @@ export default function Player() {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.5);
 
-  // Воспроизведение при смене трека
-  useEffect(() => {
-    if (currentTrack && audioRef.current) {
-      audioRef.current.play();
-      dispatch(setIsPlaying(true));
-    }
-  }, [currentTrack, dispatch]);
+
 
   // Применение громкости
   useEffect(() => {
@@ -41,15 +35,39 @@ export default function Player() {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+  
+//авто-воспроизведение при смене трека
+  useEffect(() => {
+    if (currentTrack && audioRef.current) {
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            dispatch(setIsPlaying(true));
+          })
+          .catch((error) => {
+            console.log("Воспроизведение прервано React-рендером (это безопасно):", error);
+          });
+      }
+    }
+  }, [currentTrack, dispatch]);
 
+  // 2. Обновляем ручной клик по кнопке Play
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         dispatch(setIsPlaying(false));
       } else {
-        audioRef.current.play();
-        dispatch(setIsPlaying(true));
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              dispatch(setIsPlaying(true));
+            })
+            .catch(console.error);
+        }
       }
     }
   };
