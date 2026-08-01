@@ -13,6 +13,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -26,10 +27,11 @@ export default function SignIn() {
     try {
       setIsLoading(true);
       await loginUser(email, password);
-      const tokens = await getToken(email, password);
-      localStorage.setItem("access_token", tokens.access);
-      localStorage.setItem("refresh_token", tokens.refresh);
-
+      const userData = await loginUser(email, password); 
+  const tokens = await getToken(email, password);
+localStorage.setItem("access_token", tokens.access);
+  localStorage.setItem("refresh_token", tokens.refresh);
+  localStorage.setItem("username", userData.username);
 
       router.push("/");
     } catch (err: any) {

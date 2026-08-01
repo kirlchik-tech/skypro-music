@@ -1,16 +1,40 @@
-import Image from "next/image";
-import styles from "./SidebarRight.module.css";
-import Link from "next/link";
+"use client"; 
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "./SidebarRight.module.css";
 
 export default function SidebarRight() {
+  const router = useRouter();
+  const [username, setUsername] = useState<string | null>(null);
+
+  // Достаем имя пользователя из localStorage только на клиенте
+  useEffect(() => {
+    const savedName = localStorage.getItem("username");
+    setUsername(savedName || "Гость"); 
+  }, []);
+
+  // Функция выхода
+  const handleLogout = () => {
+
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("username");
+    
+
+    router.push("/auth/signin");
+  };
+
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        {/* Возвращаем имя пользователя */}
-        <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
 
-        <div className={styles.sidebar__icon}>
+        <p className={styles.sidebar__personalName}>{username || "Загрузка..."}</p>
+
+
+        <div className={styles.sidebar__icon} onClick={handleLogout}>
           <svg 
             width="40" 
             height="40" 
@@ -35,19 +59,16 @@ export default function SidebarRight() {
       <div className={styles.sidebar__block}>
         <div className={styles.sidebar__list}>
           <div className={styles.sidebar__item}>
-            {/* Меняем 1 на 2 */}
             <Link href="/selection/2">
               <Image src="/img/playlist01.png" alt="Плейлист дня" width={250} height={150} className={styles.sidebar__img} priority />
             </Link>
           </div>
           <div className={styles.sidebar__item}>
-            {/* Меняем 2 на 3 */}
             <Link href="/selection/3">
               <Image src="/img/playlist02.png" alt="100 танцевальных хитов" width={250} height={150} className={styles.sidebar__img} priority />
             </Link>
           </div>
           <div className={styles.sidebar__item}>
-            {/* Меняем 3 на 4 */}
             <Link href="/selection/4">
               <Image src="/img/playlist03.png" alt="Инди-заряд" width={250} height={150} className={styles.sidebar__img} priority />
             </Link>
