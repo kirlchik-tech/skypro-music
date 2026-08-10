@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react"; 
 import classNames from "classnames";
 import styles from "./Filter.module.css";
-import { Track } from "../../../data"; 
+import { Track } from "../../../data";
 
 interface FilterProps {
   tracks: Track[];
@@ -12,16 +12,23 @@ interface FilterProps {
 export default function Filter({ tracks }: FilterProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
-  const toggleFilter = (filter: string) => {
-    setActiveFilter(activeFilter === filter ? null : filter);
-  };
+  const safeTracks = Array.isArray(tracks) ? tracks : [];
 
- const safeTracks = Array.isArray(tracks) ? tracks : [];
+  const toggleFilter = useCallback((filter: string) => {
+    setActiveFilter((prev) => (prev === filter ? null : filter));
+  }, []); 
 
-  const uniqueAuthors = Array.from(new Set(safeTracks.map((track) => track.author)));
-  const uniqueGenres = Array.from(new Set(safeTracks.map((track) => track.genre)));
-  const yearOptions = ["По умолчанию", "Сначала новые", "Сначала старые"];
+  // Они пересчитаются если изменится safeTracks
+  const uniqueAuthors = useMemo(() => {
+    return Array.from(new Set(safeTracks.map((track) => track.author)));
+  }, [safeTracks]);
 
+  const uniqueGenres = useMemo(() => {
+    return Array.from(new Set(safeTracks.map((track) => track.genre)));
+  }, [safeTracks]);
+
+  // Статичный массив тоже можно обернуть, чтобы он не создавался заново
+  const yearOptions = useMemo(() => ["По умолчанию", "Сначала новые", "Сначала старые"]   , []);
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>

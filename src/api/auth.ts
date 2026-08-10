@@ -70,3 +70,24 @@ export async function getToken(email: string, password: string): Promise<TokenRe
 
   return data;
 }
+
+// Запрос на обновление токена
+export async function refreshTokenAPI(): Promise<string> {
+  const refresh = localStorage.getItem("refresh_token");
+  if (!refresh) throw new Error("Нет refresh токена");
+
+  const response = await fetch(`${BASE_URL}/user/token/refresh/`, {
+    method: "POST",
+    body: JSON.stringify({ refresh }),
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Не удалось обновить токен");
+  }
+
+  const data = await response.json();
+  return data.access; // Возвращаем только новый access_token
+}

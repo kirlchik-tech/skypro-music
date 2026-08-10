@@ -111,3 +111,29 @@
   stroke: #ffffff;
   cursor: pointer;
 }
+
+.trackPlay__likeSvg {
+  width: 14px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+  cursor: pointer;
+  transition: transform 0.2s ease, stroke 0.2s ease, fill 0.2s ease;
+}
+
+.trackPlay__likeSvg:hover {
+  transform: scale(1.3);
+  stroke: #acacac;
+}
+
+.liked .trackPlay__likeSvg {
+  fill: #B672FF; 
+  stroke: #B672FF;
+}
+
+.liked .trackPlay__likeSvg:hover {
+  stroke: #9a41ff;
+  fill: #9a41ff;
+}
+
+

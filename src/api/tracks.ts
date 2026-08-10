@@ -25,26 +25,58 @@ export async function getSelection(id: string): Promise<SelectionResponse> {
   const data = await response.json();
   const selection = data.data || data; 
   const rawItems = selection.items || [];
-
-  if (rawItems.length > 0 && typeof rawItems[0] !== 'object') {
-    // Качаем все треки из базы
-    const allTracksResponse = await fetch(`${BASE_URL}/catalog/track/all/`);
-    const allTracksData = await allTracksResponse.json();
-    const allTracks = allTracksData.data || allTracksData.items || allTracksData;   
-    // Оставляем только те треки, ID которых есть в нашей подборке
-    const populatedItems = allTracks.filter((track: any) => 
-      rawItems.includes(track.id) || rawItems.includes(track._id)
-    );
-    
-    return {
-      items: populatedItems,
-      name: selection.name || "Подборка",
-    };
-  }
-  const normalizedItems = rawItems.map((item: any) => item.track ? item.track : item);
   
+
+  if (rawItems.length > 0 && !rawItems[0].name) {
+    // Значит, сервер прислал обрубки. Качаем весь список треков!
+    const allTracksRes = await fetch(`${BASE_URL}/catalog/track/all/`);
+    const allTracksData = await allTracksRes.json();
+    const allTracks = allTracksData.data || allTracksData.items || allTracksData || [];
+    
+    if (Array.isArray(allTracks)) {
+      // Сопоставляем каждый обрубок с полноценным треком из базы
+      const populatedItems = rawItems.map((raw: any) => {
+        const rawId = raw?.id || raw?._id || raw; // Достаем ID как угодно
+        // Ищем полное совпадение в каталоге
+        return allTracks.find((t: any) => t.id === rawId || t._id === rawId);
+      }).filter((t: any) => t && t.name); // Убираем пустые/битые результаты
+      
+      return { 
+        items: populatedItems, 
+        name: selection.name || "Подборка" 
+      };
+    }
+  }
+  
+  // Если сервер прислал нормальные объекты (или обернутые в свойство track)
   return {
-    items: normalizedItems, 
+    items: rawItems.map((item: any) => item.track ? item.track : item), 
     name: selection.name || "Подборка", 
   };
+}
+// Получить избранные треки
+export async function getFavoriteTracks(token: string): Promise<Track[]> {
+  const response = await fetch(`${BASE_URL}/catalog/track/favorite/all/`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Токен устарел");
+    }
+    throw new Error("Ошибка при получении избранного");
+  }
+
+  const data = await response.json();
+  
+  // API может прислать массив напрямую или обернуть в data
+  const rawItems = data.data || data.items || data || [];
+  
+  // Распаковываем треки (как мы делали это для подборок)
+  const normalizedItems = rawItems.map((item: any) => item.track ? item.track : item);
+  
+  return normalizedItems;
 }

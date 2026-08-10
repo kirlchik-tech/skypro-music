@@ -15,7 +15,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { id: 1, label: "Главное", href: "/" },
-    { id: 2, label: "Мои треки", href: "/my-tracks" },
+    { id: 2, label: "Мои треки", href: "/favorites" }, 
     { id: 3, label: "Войти", href: "/auth/signin" }, 
   ];
 

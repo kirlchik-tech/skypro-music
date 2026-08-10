@@ -143,3 +143,30 @@
   0% { transform: scale(0.8); }
   100% { transform: scale(1.2); }
 }
+
+/* Стили для иконки лайка в списке треков */
+.track__timeSvg {
+  width: 14px;
+  height: 12px;
+  margin-right: 17px;
+  fill: transparent;
+  stroke: #696969;
+  cursor: pointer;
+  transition: transform 0.2s ease, stroke 0.2s ease, fill 0.2s ease;
+}
+
+.track__timeSvg:hover {
+  transform: scale(1.3);
+  stroke: #acacac;
+}
+
+/* Свечение активного лайка */
+.liked {
+  fill: #B672FF !important; 
+  stroke: #B672FF !important;
+}
+
+.liked:hover {
+  stroke: #9a41ff !important;
+  fill: #9a41ff !important;
+}

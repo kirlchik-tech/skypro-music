@@ -1,30 +1,36 @@
 "use client"; 
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // <-- Добавили usePathname
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./SidebarRight.module.css";
 
 export default function SidebarRight() {
   const router = useRouter();
+  const pathname = usePathname(); // <-- Получаем текущий путь
   const [username, setUsername] = useState<string | null>(null);
 
-  // Достаем имя пользователя из localStorage только на клиенте
   useEffect(() => {
     const savedName = localStorage.getItem("username");
-    setUsername(savedName || "Гость"); 
+    setUsername(savedName || null);
   }, []);
 
-  // Функция выхода
   const handleLogout = () => {
-
+    // Очищаем сессию
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("username");
     
-
-    router.push("/auth/signin");
+    // Сбрасываем имя в UI
+    setUsername(null);
+    
+    // Проверяем страницу
+    if (pathname === "/favorites") {
+      router.push("/"); // Кидаем на главную, если были в избранном
+    } else {
+      router.push("/auth/signin"); // В остальных случаях кидаем на логин
+    }
   };
 
   return (
