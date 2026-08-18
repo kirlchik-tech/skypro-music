@@ -8,13 +8,8 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import styles from "./Player.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setIsPlaying, nextTrack } from "../../store/features/playerSlice";
+import { formatDuration } from "../../utils/formatters"; 
 
-// Хелпер для красивого форматирования времени (например, 03:05)
-const formatTime = (time: number) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-};
 
 export default function Player() {
   const { currentTrack, isPlaying, isLooped } = useAppSelector((state) => state.player);
@@ -104,7 +99,7 @@ export default function Player() {
 
 
         <div style={{ color: '#696969', fontSize: '14px', display: 'flex', justifyContent: 'flex-end', paddingRight: '15px' }}>
-          {formatTime(currentTime)} / {formatTime(duration)}
+          {formatDuration(currentTime)} / {formatDuration(duration)}
         </div>
 
 

@@ -2,7 +2,12 @@
 
 import styles from "./SearchBar.module.css";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  searchValue: string;
+  setSearchValue: (val: string) => void;
+}
+
+export default function SearchBar({ searchValue, setSearchValue }: SearchBarProps) {
   return (
     <div className={styles.centerblock__search}>
       <svg className={styles.search__svg}>
@@ -13,6 +18,8 @@ export default function SearchBar() {
         type="search"
         placeholder="Поиск"
         name="search"
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)} // Меняем стейт при вводе
       />
     </div>
   );

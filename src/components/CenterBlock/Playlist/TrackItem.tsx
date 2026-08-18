@@ -9,6 +9,7 @@ import { Track } from "../../../../data";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { setCurrentTrack } from "../../../store/features/playerSlice";
 import { useLike } from "../../../hooks/useLike";
+import { formatDuration } from "../../../utils/formatters";
 
 interface TrackItemProps {
   track: Track;
@@ -30,11 +31,6 @@ export default function TrackItem({ track, playlist }: TrackItemProps) {
     dispatch(setCurrentTrack({ track, playlist }));
   }, [dispatch, track, playlist]);
 
-  const formatDuration = useCallback((seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  }, []);
 
   // Если мы в избранном и сняли лайк — прячем трек
   if (pathname === "/favorites" && !isLiked) {

@@ -13,12 +13,17 @@ interface PlaylistProps {
 
 export default function Playlist({ tracks, isLoading, error }: PlaylistProps) {
   return (
-    <div className={styles.centerblock__content}>
-      <PlaylistHeader />
-      <div className={styles.content__playlist}>
+    <div className={styles.content__playlist}>
         
         {isLoading && <div style={{ color: "#ffffff", marginTop: "20px" }}>Загрузка треков...</div>}
         {error && <div style={{ color: "red", marginTop: "20px" }}>{error}</div>}
+        
+        {/* ЕСЛИ ТРЕКИ НЕ НАЙДЕНЫ */}
+        {!isLoading && !error && Array.isArray(tracks) && tracks.length === 0 && (
+          <div style={{ color: "#909090", marginTop: "40px", fontSize: "24px", textAlign: "center" }}>
+            Нет подходящих треков
+          </div>
+        )}
         
         {!isLoading && !error && Array.isArray(tracks) && tracks.map((track, index) => (
           <TrackItem
@@ -29,6 +34,5 @@ export default function Playlist({ tracks, isLoading, error }: PlaylistProps) {
         ))}
 
       </div>
-    </div>
   );
 }

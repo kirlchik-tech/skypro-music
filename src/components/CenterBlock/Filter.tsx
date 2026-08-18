@@ -7,28 +7,37 @@ import { Track } from "../../../data";
 
 interface FilterProps {
   tracks: Track[];
+  selectedAuthors: string[];
+  toggleAuthor: (author: string) => void;
+  selectedGenres: string[];
+  toggleGenre: (genre: string) => void;
+  sortOrder: string;
+  setSortOrder: (order: string) => void;
 }
 
-export default function Filter({ tracks }: FilterProps) {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+export default function Filter({ 
+  tracks, selectedAuthors, toggleAuthor, selectedGenres, toggleGenre, sortOrder, setSortOrder 
+}: FilterProps) {
+  //  здесь хранится только инфа о том, какое меню ОТКРЫТО
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const safeTracks = Array.isArray(tracks) ? tracks : [];
 
-  const toggleFilter = useCallback((filter: string) => {
-    setActiveFilter((prev) => (prev === filter ? null : filter));
+  const toggleDropdown = useCallback((filter: string) => {
+    setActiveDropdown((prev) => (prev === filter ? null : filter));
   }, []); 
 
-  // Они пересчитаются если изменится safeTracks
+  // Списки строятся из НЕотфильтрованных треков
   const uniqueAuthors = useMemo(() => {
-    return Array.from(new Set(safeTracks.map((track) => track.author)));
+    return Array.from(new Set(safeTracks.map((track) => track.author).filter(Boolean)));
   }, [safeTracks]);
 
   const uniqueGenres = useMemo(() => {
-    return Array.from(new Set(safeTracks.map((track) => track.genre)));
+    return Array.from(new Set(safeTracks.map((track) => track.genre).flat().filter(Boolean)));
   }, [safeTracks]);
 
-  // Статичный массив тоже можно обернуть, чтобы он не создавался заново
-  const yearOptions = useMemo(() => ["По умолчанию", "Сначала новые", "Сначала старые"]   , []);
+  const yearOptions = useMemo(() => ["По умолчанию", "Сначала новые", "Сначала старые"], []);
+
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
@@ -37,17 +46,26 @@ export default function Filter({ tracks }: FilterProps) {
       <div className={styles.filter__wrapper}>
         <button
           className={classNames(styles.filter__button, {
-            [styles.active]: activeFilter === "author",
+            [styles.active]: activeDropdown === "author",
           })}
-          onClick={() => toggleFilter("author")}
+          onClick={() => toggleDropdown("author")}
         >
           исполнителю
         </button>
-        {activeFilter === "author" && (
+        {/* Бейдж количества выбранных */}
+        {selectedAuthors.length > 0 && <div className={styles.filter__badge}>{selectedAuthors.length}</div>}
+        
+        {activeDropdown === "author" && (
           <div className={styles.filter__popup}>
             <ul className={styles.filter__list}>
               {uniqueAuthors.map((author, index) => (
-                <li key={index} className={styles.filter__item}>
+                <li 
+                  key={index} 
+                  className={classNames(styles.filter__item, {
+                    [styles.activeItem]: selectedAuthors.includes(author as string)
+                  })}
+                  onClick={() => toggleAuthor(author as string)}
+                >
                   {author}
                 </li>
               ))}
@@ -60,17 +78,26 @@ export default function Filter({ tracks }: FilterProps) {
       <div className={styles.filter__wrapper}>
         <button
           className={classNames(styles.filter__button, {
-            [styles.active]: activeFilter === "year",
+            [styles.active]: activeDropdown === "year",
           })}
-          onClick={() => toggleFilter("year")}
+          onClick={() => toggleDropdown("year")}
         >
           году выпуска
         </button>
-        {activeFilter === "year" && (
+        {activeDropdown === "year" && (
           <div className={styles.filter__popup}>
             <ul className={styles.filter__list}>
               {yearOptions.map((year, index) => (
-                <li key={index} className={styles.filter__item}>
+                <li 
+                  key={index} 
+                  className={classNames(styles.filter__item, {
+                    [styles.activeItem]: sortOrder === year
+                  })}
+                  onClick={() => {
+                    setSortOrder(year);
+                    setActiveDropdown(null); // Закрываем при выборе
+                  }}
+                >
                   {year}
                 </li>
               ))}
@@ -83,17 +110,26 @@ export default function Filter({ tracks }: FilterProps) {
       <div className={styles.filter__wrapper}>
         <button
           className={classNames(styles.filter__button, {
-            [styles.active]: activeFilter === "genre",
+            [styles.active]: activeDropdown === "genre",
           })}
-          onClick={() => toggleFilter("genre")}
+          onClick={() => toggleDropdown("genre")}
         >
           жанру
         </button>
-        {activeFilter === "genre" && (
+        {/* Бейдж количества выбранных */}
+        {selectedGenres.length > 0 && <div className={styles.filter__badge}>{selectedGenres.length}</div>}
+
+        {activeDropdown === "genre" && (
           <div className={styles.filter__popup}>
             <ul className={styles.filter__list}>
               {uniqueGenres.map((genre, index) => (
-                <li key={index} className={styles.filter__item}>
+                <li 
+                  key={index} 
+                  className={classNames(styles.filter__item, {
+                    [styles.activeItem]: selectedGenres.includes(genre as string)
+                  })}
+                  onClick={() => toggleGenre(genre as string)}
+                >
                   {genre}
                 </li>
               ))}
