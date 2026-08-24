@@ -33,7 +33,8 @@ export default function SignUp() {
       setIsLoading(true);
       await registerUser(email, password, username);
       router.push("/auth/signin");
-    } catch (err: any) {
+    } catch (error: unknown) { 
+      const err = error as Error; 
       setError(err.message);
     } finally {
       setIsLoading(false);

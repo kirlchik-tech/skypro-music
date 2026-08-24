@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./signin.module.css";
 import { loginUser, getToken } from "../../../src/api/auth";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const router = useRouter();
@@ -20,21 +21,26 @@ export default function SignIn() {
     setError(null);
 
     if (!email || !password) {
+      toast.warn("Заполните все поля"); 
       setError("Заполните все поля");
       return;
     }
 
     try {
       setIsLoading(true);
-      await loginUser(email, password);
       const userData = await loginUser(email, password); 
-  const tokens = await getToken(email, password);
-localStorage.setItem("access_token", tokens.access);
-  localStorage.setItem("refresh_token", tokens.refresh);
-  localStorage.setItem("username", userData.username);
+      const tokens = await getToken(email, password);
+      
+      localStorage.setItem("access_token", tokens.access);
+      localStorage.setItem("refresh_token", tokens.refresh);
+      localStorage.setItem("username", userData.username);
+
+      toast.success(`С возвращением, ${userData.username}! 👋`);
 
       router.push("/");
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast.error(err.message); 
       setError(err.message);
     } finally {
       setIsLoading(false);

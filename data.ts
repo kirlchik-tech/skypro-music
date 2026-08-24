@@ -1,16 +1,23 @@
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
+
 export interface Track {
   id: number;
+  _id?: number; 
   name: string;
   author: string;
-  release_date: string;
-  genre: string[];
+  release_date: string | null;
+  genre: string | string[];
   duration_in_seconds: number;
   album: string;
   logo: string | null;
   track_file: string;
-  stared_user: any[];
+  stared_user: User[]; 
 }
-
 export const tracksData: Track[] = [
   {
     id: 8,

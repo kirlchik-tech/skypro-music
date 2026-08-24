@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
+import { toast } from "react-toastify"; 
 import { Track } from "../../data";
 import { withReAuth } from "../api/withReAuth";
 import { useAppDispatch } from "../store/store";
@@ -12,7 +13,6 @@ export const useLike = (track: Track | null) => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  // При загрузке проверяем, стоит ли лайк
   useEffect(() => {
     if (!track) return;
     if (pathname === "/favorites") {
@@ -20,25 +20,27 @@ export const useLike = (track: Track | null) => {
       return;
     }
     const username = localStorage.getItem("username");
-    const hasLiked = track.stared_user?.some((user: any) => user.username === username);
+    const hasLiked = track.stared_user?.some((user) => user.username === username);
     setIsLiked(!!hasLiked);
   }, [track, pathname]);
 
   const handleLike = useCallback(async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Чтобы трек не включался при клике на сердечко
+    e.stopPropagation(); 
     if (!track) return;
 
-    const trackId = track.id || (track as any)._id; 
-    const username = localStorage.getItem("username") || "";
-    
-    // 1. ОПТИМИСТИЧНЫЙ UI: мгновенно меняем цвет сердечка
-    const newIsLiked = !isLiked;
-    setIsLiked(newIsLiked); 
+    // ПРОВЕРКА ДЛЯ ГОСТЕЙ (Неавторизованных)
+    const username = localStorage.getItem("username");
+    if (!username) {
+      toast.warn("Войдите в аккаунт, чтобы ставить лайки! 🔒"); // <-- Заменили alert на красивый warning
+      return;
+    }
 
-    // 2. БЕЗОПАСНАЯ ПАМЯТЬ: Обновляем Redux (чтобы в плеере тоже поменялся цвет)
+    const trackId = track.id || track._id; 
+    const newIsLiked = !isLiked;
+    
+    setIsLiked(newIsLiked); 
     dispatch(updateTrackLike({ trackId, isLiked: newIsLiked, username }));
 
-    // 3. ОТПРАВКА НА СЕРВЕР
     try {
       await withReAuth(async (token) => {
         const url = `https://webdev-music-003b5b991590.herokuapp.com/catalog/track/${trackId}/favorite/`;
@@ -52,12 +54,20 @@ export const useLike = (track: Track | null) => {
         if (response.status === 401) throw new Error("Токен устарел");
         if (!response.ok) throw new Error("Не удалось сохранить лайк");
         
+        
+        if (newIsLiked) {
+          toast.success("Добавлено в избранное 💜", { icon: "🔥", autoClose: 1500 });
+        } else {
+          toast.info("Удалено из избранного 💔", { autoClose: 1500 });
+        }
+
         return response.json();
       });
-    } catch (error: any) {
-      console.error("Ошибка лайка:", error.message);
+    } catch (error: unknown) {
+      const err = error as Error; 
+      // Выводим ошибку красиво
+      toast.error(`Ошибка: ${err.message}`);
       
-      // Если сервер отвалился или интернет пропал, откатываем визуал обратно
       setIsLiked(!newIsLiked);
       dispatch(updateTrackLike({ trackId, isLiked: !newIsLiked, username }));
     }

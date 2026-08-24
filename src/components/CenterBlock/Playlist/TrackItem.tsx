@@ -21,8 +21,8 @@ export default function TrackItem({ track, playlist }: TrackItemProps) {
   const pathname = usePathname();
   const { currentTrack, isPlaying } = useAppSelector((state) => state.player);
 
-  const trackId = track.id || (track as any)._id;
-  const currentTrackId = currentTrack?.id || (currentTrack as any)?._id;
+  const trackId = track.id || track._id;
+  const currentTrackId = currentTrack?.id || currentTrack?._id;
   const isCurrent = currentTrackId && trackId ? currentTrackId === trackId : false;
 
   const { isLiked, handleLike } = useLike(track);

@@ -10,21 +10,17 @@ export async function withReAuth<T>(apiCall: (token: string) => Promise<T>): Pro
   }
 
   try {
-    // Пытаемся выполнить оригинальный запрос
     return await apiCall(token);
-  } catch (error: any) {
-    // Если ошибка 401 (Токен устарел), запускаем процесс обновления
-    if (error.message === "Токен устарел" || error.status === 401) {
+  } catch (error: unknown) { 
+    // Создаем типизированную копию ошибки
+    const err = error as Error & { status?: number };
+    
+    if (err.message === "Токен устарел" || err.status === 401) {
       try {
         const newToken = await refreshTokenAPI();
-        
-        // Сохраняем новый токен
         localStorage.setItem("access_token", newToken);
-        
-        // ПОВТОРЯЕМ исходный запрос уже с новым токеном!
         return await apiCall(newToken);
       } catch (refreshError) {
-        // Если refresh-токен тоже протух, полностью очищаем сессию
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("username");
@@ -33,7 +29,6 @@ export async function withReAuth<T>(apiCall: (token: string) => Promise<T>): Pro
       }
     }
     
-    // Если ошибка не связана с токеном, прокидываем её дальше
     throw error;
   }
 }

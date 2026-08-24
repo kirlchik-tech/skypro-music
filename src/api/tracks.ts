@@ -35,22 +35,21 @@ export async function getSelection(id: string): Promise<SelectionResponse> {
     
     if (Array.isArray(allTracks)) {
       // Сопоставляем каждый обрубок с полноценным треком из базы
-      const populatedItems = rawItems.map((raw: any) => {
-        const rawId = raw?.id || raw?._id || raw; // Достаем ID как угодно
-        // Ищем полное совпадение в каталоге
-        return allTracks.find((t: any) => t.id === rawId || t._id === rawId);
-      }).filter((t: any) => t && t.name); // Убираем пустые/битые результаты
+      const populatedItems = rawItems.map((raw: Track) => {
+    const rawId = raw?.id || raw?._id;
+    return allTracks.find((t: Track) => t.id === rawId || t._id === rawId);
+  }).filter((t: Track | undefined) => t && t.name);
       
-      return { 
-        items: populatedItems, 
-        name: selection.name || "Подборка" 
-      };
+      return {
+    items: rawItems.map((item: Track & { track?: Track }) => item.track ? item.track : item), 
+    name: selection.name || "Подборка", 
+  };
     }
   }
   
   // Если сервер прислал нормальные объекты (или обернутые в свойство track)
   return {
-    items: rawItems.map((item: any) => item.track ? item.track : item), 
+    items: rawItems.map((item: Track & { track?: Track }) => item.track ? item.track : item), 
     name: selection.name || "Подборка", 
   };
 }
@@ -76,7 +75,7 @@ export async function getFavoriteTracks(token: string): Promise<Track[]> {
   const rawItems = data.data || data.items || data || [];
   
   // Распаковываем треки (как мы делали это для подборок)
-  const normalizedItems = rawItems.map((item: any) => item.track ? item.track : item);
+  const normalizedItems = rawItems.map((item: { track?: Track } & Track) => item.track ? item.track : item);
   
   return normalizedItems;
 }

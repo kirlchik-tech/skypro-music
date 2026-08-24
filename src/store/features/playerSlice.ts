@@ -50,38 +50,36 @@ const playerSlice = createSlice({
     updateTrackLike: (state, action: PayloadAction<{ trackId: number; isLiked: boolean; username: string }>) => {
       const { trackId, isLiked, username } = action.payload;
 
-      // Вспомогательная функция для безопасного обновления лайков
       const updateStaredUser = (track: Track) => {
         if (!track.stared_user) track.stared_user = [];
         if (isLiked) {
-          // Если лайкнули — добавляем юзера, если его там еще нет
-          if (!track.stared_user.find((u: any) => u.username === username)) {
+
+          if (!track.stared_user.find((u) => u.username === username)) {
             track.stared_user.push({ username, id: 0, email: "" });
           }
         } else {
-          // Если сняли лайк — убираем юзера
-          track.stared_user = track.stared_user.filter((u: any) => u.username !== username);
+
+          track.stared_user = track.stared_user.filter((u) => u.username !== username);
         }
       };
 
-      // Обновляем лайк в текущем треке (чтобы в плеере не пропадал)
-      if (state.currentTrack && (state.currentTrack.id === trackId || (state.currentTrack as any)._id === trackId)) {
+      
+      if (state.currentTrack && (state.currentTrack.id === trackId || state.currentTrack._id === trackId)) {
         updateStaredUser(state.currentTrack);
       }
 
-      // Обновляем лайк в основном плейлисте
-      const trackInPlaylist = state.playlist.find(t => t.id === trackId || (t as any)._id === trackId);
+      const trackInPlaylist = state.playlist.find(t => t.id === trackId || t._id === trackId);
       if (trackInPlaylist) updateStaredUser(trackInPlaylist);
 
-      // Обновляем лайк в перемешанном плейлисте
-      const trackInShuffled = state.shuffledPlaylist.find(t => t.id === trackId || (t as any)._id === trackId);
+      const trackInShuffled = state.shuffledPlaylist.find(t => t.id === trackId || t._id === trackId);
       if (trackInShuffled) updateStaredUser(trackInShuffled);
     },
 
-    nextTrack: (state) => {
+   nextTrack: (state) => {
       const currentList = state.isShuffled ? state.shuffledPlaylist : state.playlist;
       
-      const currentIndex = currentList.findIndex((t) => (t.id || (t as any)._id) === (state.currentTrack?.id || (state.currentTrack as any)?._id));
+ 
+      const currentIndex = currentList.findIndex((t) => (t.id || t._id) === (state.currentTrack?.id || state.currentTrack?._id));
 
       if (currentIndex !== -1 && currentIndex < currentList.length - 1) {
         state.currentTrack = currentList[currentIndex + 1];
@@ -91,7 +89,8 @@ const playerSlice = createSlice({
     prevTrack: (state) => {
       const currentList = state.isShuffled ? state.shuffledPlaylist : state.playlist;
       
-      const currentIndex = currentList.findIndex((t) => (t.id || (t as any)._id) === (state.currentTrack?.id || (state.currentTrack as any)?._id));
+
+      const currentIndex = currentList.findIndex((t) => (t.id || t._id) === (state.currentTrack?.id || state.currentTrack?._id));
 
       if (currentIndex > 0) {
         state.currentTrack = currentList[currentIndex - 1];
