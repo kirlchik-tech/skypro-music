@@ -99,7 +99,7 @@ export default function Player() {
 
 
         <div style={{ color: '#696969', fontSize: '14px', display: 'flex', justifyContent: 'flex-end', paddingRight: '15px' }}>
-          {formatDuration(currentTime)} / {formatDuration(duration)}
+          {formatDuration(currentTime)} / {formatDuration(currentTrack.duration_in_seconds)}
         </div>
 
 

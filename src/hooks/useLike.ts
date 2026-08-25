@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { usePathname } from "next/navigation";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import { Track } from "../../data";
 import { withReAuth } from "../api/withReAuth";
 import { useAppDispatch } from "../store/store";
@@ -10,28 +9,23 @@ import { updateTrackLike } from "../store/features/playerSlice";
 
 export const useLike = (track: Track | null) => {
   const [isLiked, setIsLiked] = useState(false);
-  const pathname = usePathname();
   const dispatch = useAppDispatch();
 
+  // При загрузке честно проверяем, есть ли наш ник в массиве лайкнувших
   useEffect(() => {
     if (!track) return;
-    if (pathname === "/favorites") {
-      setIsLiked(true);
-      return;
-    }
     const username = localStorage.getItem("username");
     const hasLiked = track.stared_user?.some((user) => user.username === username);
     setIsLiked(!!hasLiked);
-  }, [track, pathname]);
+  }, [track]); // <-- Убрали зависимость от pathname
 
   const handleLike = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation(); 
     if (!track) return;
 
-    // ПРОВЕРКА ДЛЯ ГОСТЕЙ (Неавторизованных)
     const username = localStorage.getItem("username");
     if (!username) {
-      toast.warn("Войдите в аккаунт, чтобы ставить лайки! 🔒"); // <-- Заменили alert на красивый warning
+      toast.warn("Войдите в аккаунт, чтобы ставить лайки! 🔒"); 
       return;
     }
 
@@ -54,7 +48,6 @@ export const useLike = (track: Track | null) => {
         if (response.status === 401) throw new Error("Токен устарел");
         if (!response.ok) throw new Error("Не удалось сохранить лайк");
         
-        
         if (newIsLiked) {
           toast.success("Добавлено в избранное 💜", { icon: "🔥", autoClose: 1500 });
         } else {
@@ -65,7 +58,6 @@ export const useLike = (track: Track | null) => {
       });
     } catch (error: unknown) {
       const err = error as Error; 
-      // Выводим ошибку красиво
       toast.error(`Ошибка: ${err.message}`);
       
       setIsLiked(!newIsLiked);
