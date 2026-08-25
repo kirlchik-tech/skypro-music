@@ -1,0 +1,10 @@
+
+
+export const formatDuration = (seconds: number): string => {
+  if (!seconds || seconds < 0) return "0:00"; // Крайний случай (negative or NaN)
+  
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+};

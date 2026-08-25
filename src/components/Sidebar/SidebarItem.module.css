@@ -1,0 +1,36 @@
+.sidebar__item {
+  width: 250px;
+  height: 150px;
+}
+
+.sidebar__item:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.sidebar__link {
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar__img {
+  width: 100%;
+  height: auto;
+}
+
+.menu__item {
+  padding: 5px 0;
+  margin-bottom: 16px;
+}
+
+.menu__link {
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.menu__link:hover {
+  color: #d9b6ff;
+}
